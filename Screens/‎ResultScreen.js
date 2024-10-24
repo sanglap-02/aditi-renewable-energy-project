@@ -5,8 +5,14 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const ResultScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { questions, totalQuestions, correctAnswers, incorrectAnswers, score } =
-    route.params;
+  const {
+    email,
+    questions,
+    totalQuestions,
+    correctAnswers,
+    incorrectAnswers,
+    score,
+  } = route.params;
 
   return (
     <View style={styles.container}>
@@ -34,6 +40,7 @@ const ResultScreen = () => {
         style={styles.checkAnswersButton}
         onPress={() =>
           navigation.navigate("ResultDetailsScreen", {
+            email: email,
             questions: route.params.questions,
             userAnswers: route.params.userAnswers,
             correctAnswers: correctAnswers,

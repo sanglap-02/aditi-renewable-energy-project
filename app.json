@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "quizApp",
+    "name": "RenewEd Tech",
     "slug": "quizApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,15 +16,21 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sanglap02.quizApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7402c9f5-cd5d-4110-af54-50858f066742"
+      }
+    }
   }
 }

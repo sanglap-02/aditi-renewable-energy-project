@@ -14,7 +14,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 import { firestore } from "../firebase";
 
 const QuizDetails = ({ route, navigation }) => {
-  const { topicId } = route.params;
+  const { email, topicId } = route.params;
   const [topicDetails, setTopicDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -90,6 +90,7 @@ const QuizDetails = ({ route, navigation }) => {
           style={styles.button}
           onPress={() =>
             navigation.navigate("Quiz", {
+              email: email,
               topicId: topicDetails.topic_id,
             })
           }

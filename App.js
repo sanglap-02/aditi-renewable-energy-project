@@ -14,6 +14,10 @@ import ResultScreen from "./Screens/‎ResultScreen";
 import ResultDetailsScreen from "./Screens/ResultDetailsScreen";
 import Aboutus from "./Screens/Aboutus";
 
+import ChatbotScreen from "./Screens/ChatbotScreen";
+
+import TaskPlanner from "./Screens/TaskPlanner";
+
 // import ForgotPasswordScreen from "./Screens/ForgotPasswordScreen";
 
 // AppRegistry.registerComponent(appName, () => App);
@@ -105,7 +109,7 @@ export default function App() {
           name="Quiz"
           component={Quiz}
           options={{
-            headerShown: true,
+            headerShown: false,
             statusBarColor: "#599D14FF",
             headerBackTitle: "",
           }}
@@ -114,7 +118,7 @@ export default function App() {
           name="ResultScreen"
           component={ResultScreen}
           options={{
-            headerShown: true,
+            headerShown: false,
             statusBarColor: "#599D14FF",
             headerBackTitle: "",
           }}
@@ -131,6 +135,24 @@ export default function App() {
         <Stack.Screen
           name="Aboutus"
           component={Aboutus}
+          options={{
+            headerShown: true,
+            statusBarColor: "#599D14FF",
+            headerBackTitle: "",
+          }}
+        />
+        <Stack.Screen
+          name="ChatbotScreen"
+          component={ChatbotScreen}
+          options={{
+            headerShown: true,
+            statusBarColor: "#599D14FF",
+            headerBackTitle: "",
+          }}
+        />
+        <Stack.Screen
+          name="TaskPlanner"
+          component={TaskPlanner}
           options={{
             headerShown: true,
             statusBarColor: "#599D14FF",

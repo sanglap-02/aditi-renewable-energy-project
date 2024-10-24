@@ -31,7 +31,12 @@ const LoginScreen = ({ navigation }) => {
 
       if (user.emailVerified) {
         Alert.alert("Success", "Welcome Back ! Let's Continue our learning");
-        navigation.navigate("Dashboard"); // Replace with your home screen
+        // navigation.navigate("Dashboard", {
+        //   email: email,
+        // });
+        navigation.navigate("Dashboard", {
+          email: email,
+        });
       } else {
         Alert.alert(
           "Verification Required",
@@ -107,15 +112,6 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           {/* Social Login */}
-          <Text style={styles.orText}>Or log in with</Text>
-          <View style={styles.socialButtons}>
-            <TouchableOpacity style={styles.socialButton}>
-              <FontAwesome name="google" size={24} color="red" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <FontAwesome name="facebook" size={24} color="#3b5998" />
-            </TouchableOpacity>
-          </View>
 
           {/* Don't have an account? */}
           <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>

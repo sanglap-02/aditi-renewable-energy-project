@@ -47,7 +47,7 @@ import { firestore } from "../firebase";
 // ];
 
 const Quiz = ({ route, navigation }) => {
-  const { topicId } = route.params;
+  const { email, topicId } = route.params;
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -152,6 +152,7 @@ const Quiz = ({ route, navigation }) => {
       }
     });
     navigation.navigate("ResultScreen", {
+      email: email,
       questions: questions,
       userAnswers: userAnswers,
       totalQuestions: questions.length,

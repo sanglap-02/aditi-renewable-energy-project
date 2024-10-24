@@ -13,7 +13,8 @@ import { Icon } from "react-native-elements";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore, logout } from "../firebase";
 
-export default function Dashboard({ navigation }) {
+export default function Dashboard({ route, navigation }) {
+  const { email } = route.params;
   const [user, setUser] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [greeting, setGreeting] = useState("Good Afternoon");
@@ -28,6 +29,8 @@ export default function Dashboard({ navigation }) {
   };
 
   useEffect(() => {
+    console.log(email);
+
     const fetchTopics = async () => {
       try {
         const querySnapshot = await getDocs(
@@ -74,21 +77,8 @@ export default function Dashboard({ navigation }) {
     navigation.navigate("OnbordingSc");
   };
 
-  const navAllTest = () => {
-    navigation.navigate("Select Test");
-  };
-
-  const goSelectPro = (test) => {
-    navigation.navigate("Select Provience", { test });
-  };
-
-  const goProfilePage = (user) => {
-    console.log("hi");
-    navigation.navigate("Profile Screen", { user });
-  };
-
-  const goAboutUs = () => {
-    navigation.navigate("Aboutus", { user });
+  const navTaskPlanner = () => {
+    navigation.navigate("TaskPlanner", { email: email });
   };
 
   return (
@@ -105,7 +95,8 @@ export default function Dashboard({ navigation }) {
         >
           <View style={styles.sidebar}>
             <View style={styles.profileContainer}>
-              <Text style={styles.name}>Hello</Text>
+              <Text style={styles.name}>Hi</Text>
+              <Text style={styles.email}>{email}</Text>
             </View>
             <TouchableOpacity style={styles.menuItem}>
               <Text
@@ -115,8 +106,13 @@ export default function Dashboard({ navigation }) {
                 Home
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={goAboutUs}>
-              <Text style={styles.menuText}>About Us</Text>
+            <TouchableOpacity style={styles.menuItem}>
+              <Text
+                style={styles.menuText}
+                onPress={() => navigation.navigate("Aboutus")}
+              >
+                About Us
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.menuItem}>
               <Text style={styles.menuText} onPress={handleSignOut}>
@@ -125,9 +121,9 @@ export default function Dashboard({ navigation }) {
             </TouchableOpacity>
           </View>
         </Modal>
-        <TouchableOpacity onPress={() => goAboutUs(user)}>
+        <TouchableOpacity onPress={() => navigation.navigate("ChatbotScreen")}>
           <Image
-            source={require("../assets/profile.png")}
+            source={require("../assets/robot-assistant.png")}
             style={styles.profileIconDas}
           />
         </TouchableOpacity>
@@ -139,19 +135,22 @@ export default function Dashboard({ navigation }) {
           {user ? <Text style={styles.userName}>sanglap</Text> : <Text></Text>}
         </View>
       </View>
-      <View style={styles.quizStatsContainer}>
-        <View style={styles.statBox}>
-          <Text style={styles.statLabel}>Quizzes Taken</Text>
-          <Text style={styles.statValue}>0</Text>
-        </View>
-        <View style={styles.statBox2}>
-          <Text style={styles.statLabel}>Quiz History</Text>
-          <Text style={styles.statValue}>0/100</Text>
-        </View>
+
+      {/* New Task Planner Section */}
+      <View style={styles.taskPlannerContainer}>
+        <Text style={styles.taskPlannerTitle}>Plan Your Projects</Text>
+        <TouchableOpacity
+          style={styles.taskPlannerButton}
+          onPress={navTaskPlanner}
+        >
+          <Text style={styles.taskPlannerButtonText}>Go to Task Planner</Text>
+          <Icon name="chevron-right" type="entypo" color="white" />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.testSelectionContainer}>
         <View style={styles.testSelectionHeader}>
-          <Text style={styles.testSelectionTitle}>Select Test</Text>
+          <Text style={styles.testSelectionTitle}>Select Topic</Text>
         </View>
         <ScrollView>
           {topics.map((topic) => (
@@ -161,6 +160,7 @@ export default function Dashboard({ navigation }) {
               onPress={() =>
                 navigation.navigate("TopicDetails", {
                   topicId: topic.topic_id,
+                  email: email,
                 })
               }
             >
@@ -191,13 +191,6 @@ const styles = StyleSheet.create({
   profileContainer: {
     marginBottom: 20,
   },
-  profileIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: "#ddd",
-    marginBottom: 10,
-  },
   profileIconDas: {
     width: 45,
     height: 45,
@@ -209,12 +202,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
   },
-  menuItem: {
-    paddingVertical: 15,
-  },
-  menuText: {
-    fontSize: 16,
+  email: {
+    fontSize: 15,
     color: "#000",
+    marginTop: 4,
+    marginBottom: 20,
   },
   header: {
     flexDirection: "row",
@@ -243,6 +235,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
     letterSpacing: 2,
+    marginTop: 10,
   },
   greetingIcon: {
     width: 60,
@@ -254,42 +247,33 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 10,
   },
-  quizStatsContainer: {
-    flexDirection: "column",
-    justifyContent: "space-around",
+  taskPlannerContainer: {
     backgroundColor: "#CEE8CBFF",
     borderRadius: 25,
     marginHorizontal: 20,
     paddingVertical: 30,
-    paddingHorizontal: 50,
-  },
-  statBox: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    paddingHorizontal: 30,
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 30,
   },
-  statBox2: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  statLabel: {
-    color: "green",
-    fontWeight: "bold",
-    fontSize: 20,
-  },
-  statValue: {
-    backgroundColor: "white",
-    borderRadius: 50,
-    padding: 10,
-    width: 100,
+  taskPlannerTitle: {
+    fontSize: 22,
     color: "#599D14FF",
-    fontSize: 20,
     fontWeight: "bold",
-    textAlign: "center",
+    marginBottom: 10,
+  },
+  taskPlannerButton: {
+    flexDirection: "row",
+    backgroundColor: "#1c1e21",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  taskPlannerButtonText: {
+    fontSize: 18,
+    color: "white",
+    marginRight: 10,
   },
   testSelectionContainer: {
     backgroundColor: "#CEE8CBFF",
@@ -324,5 +308,9 @@ const styles = StyleSheet.create({
   testCardText: {
     fontSize: 18,
     color: "white",
+  },
+  menuText: {
+    fontSize: 16,
+    marginBottom: 15,
   },
 });

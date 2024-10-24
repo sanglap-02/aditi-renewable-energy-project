@@ -10,12 +10,13 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { auth } from "../firebase";
+import { auth, firestore } from "../firebase"; // Keep firestore as is
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
 import { FontAwesome } from "@expo/vector-icons"; // For the eye icon
+import { doc, setDoc } from "firebase/firestore"; // Firestore methods
 
 const SignUpScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -39,6 +40,15 @@ const SignUpScreen = ({ navigation }) => {
         password
       );
       await sendEmailVerification(userCredential.user);
+
+      // Adding the user to Firestore
+      await setDoc(doc(firestore, "users", userCredential.user.uid), {
+        user_name: name,
+        email: email,
+        average_score: 0, // Initial value
+        test_given: 0, // Initial value
+      });
+
       Alert.alert(
         "Success",
         "Verification email sent! Please check your inbox."
@@ -131,15 +141,6 @@ const SignUpScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           {/* Social Login */}
-          <Text style={styles.orText}>Or sign up with</Text>
-          <View style={styles.socialButtons}>
-            <TouchableOpacity style={styles.socialButton}>
-              <FontAwesome name="google" size={24} color="red" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <FontAwesome name="facebook" size={24} color="#3b5998" />
-            </TouchableOpacity>
-          </View>
 
           {/* Already have an account? */}
           <TouchableOpacity onPress={() => navigation.navigate("Login")}>

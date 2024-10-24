@@ -1,23 +1,66 @@
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
+import { firestore } from "../firebase"; // Import your Firestore configuration
+import { collection, getDocs } from "firebase/firestore";
 
 const Aboutus = () => {
   const navigation = useNavigation();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [supportEmail, setSupportEmail] = useState("");
+
+  useEffect(() => {
+    const fetchAboutUsData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "about_us"));
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          console.log("this is " + data.new_title);
+          console.log("this is " + data.Description);
+          console.log("this is " + data.support_email);
+
+          setTitle(data.new_title);
+          setDescription(data.Description);
+          setSupportEmail(data.support_email);
+        });
+      } catch (error) {
+        console.error("Error fetching about us data: ", error);
+      }
+    };
+
+    fetchAboutUsData();
+  }, []);
+
+  const handleContactUs = () => {
+    const subject = "Support Request";
+    const body = "Hello, I need assistance with...";
+    const url = `mailto:${supportEmail}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    Linking.openURL(url).catch((err) =>
+      console.error("An error occurred", err)
+    );
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Canadian Tests</Text>
+        <Text style={styles.title}>{title}</Text>
         <View style={styles.separator} />
-        <Text style={styles.description}>
-          Looking to immigrate to Canada, which has one of the highest living
-          standards in the world. Need help completing/assessing your
-          eligibility to move to Canada. Here you will find tips, tricks, and
-          the help you need to start your journey to Canada.
-        </Text>
-        <TouchableOpacity style={styles.contactButton}>
+        <Text style={styles.description}>{description}</Text>
+        <TouchableOpacity
+          style={styles.contactButton}
+          onPress={handleContactUs}
+        >
           <Icon name="email" size={24} color="white" />
           <Text style={styles.contactButtonText}>Contact Us</Text>
         </TouchableOpacity>
@@ -29,20 +72,7 @@ const Aboutus = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#F0547A",
-    paddingTop: 40,
-    paddingBottom: 10,
-    paddingHorizontal: 20,
-  },
-  headerTitle: {
-    color: "white",
-    fontSize: 20,
-    marginLeft: 20,
+    backgroundColor: "#1c1e21",
   },
   content: {
     marginTop: 100,
@@ -51,7 +81,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: "#000",
+    color: "white",
     marginBottom: 20,
   },
   separator: {
@@ -63,7 +93,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    color: "#333",
+    color: "white",
     marginBottom: 30,
   },
   contactButton: {

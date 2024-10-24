@@ -63,7 +63,7 @@ const OnboardingScreen = ({ navigation }) => {
         {
           backgroundColor: "#CEE8CBFF",
           image: <Image source={require("../assets/onboarding-img1.png")} />,
-          title: <Text style={styles.titleBold}>RenewED Tech</Text>,
+          title: <Text style={styles.titleBold}>RenewEd Tech</Text>,
           subtitle: "Join us today to embark on a sustainable tech journey!",
         },
         {

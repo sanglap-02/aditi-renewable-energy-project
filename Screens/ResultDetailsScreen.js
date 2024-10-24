@@ -13,7 +13,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 const ResultDetailsScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { questions, userAnswers, correctAnswers, incorrectAnswers } =
+  const { email, questions, userAnswers, correctAnswers, incorrectAnswers } =
     route.params;
   //   console.log("**************************", test);
   //   console.log("**************************", testType);
@@ -88,7 +88,7 @@ const ResultDetailsScreen = () => {
       />
       <TouchableOpacity
         style={styles.backHome}
-        onPress={() => navigation.navigate("Dashboard")}
+        onPress={() => navigation.navigate("Dashboard", { email: email })}
       >
         <Text style={styles.BackHomeText}>Home</Text>
       </TouchableOpacity>
